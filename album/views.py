@@ -1,43 +1,47 @@
-# import datetime as dt
+import datetime as dt
 from django.http  import HttpResponse,Http404
 from django.shortcuts import render,redirect
+from .models import Image
 # Create your views here.
-def welcome(request):
-    return render(request, 'welcome.html')
-# def album_of_day(request):
-#     date = dt.date.today()
-#     # FUNCTION TO CONVERT DATE OBJECT TO FIND EXACT DAY
-#     day = convert_dates(date)
-#     html = f'''
-#         <html>
-#             <body>
-#                 <h1>Album for {day} {date.day}-{date.month}-{date.year}</h1>
-#             </body>
-#         </html>
-#             '''
-#     return render(request, 'all-album/today-album.html', {"date": date,})
-# def convert_dates(dates):
 
-#     # Function that gets the weekday number for the date.
-#     day_number = dt.date.{% include "navbar.html" %}weekday(dates)
+def album_today(request):
+    date = dt.date.today()
+    album = Image.album()
+    return render(request, 'all-album/today-album.html', {"date": date,"album":album})
 
-#     days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',"Sunday"]
+def past_days_album(request,past_date):
+        # Converts data from the string Url
+    try:
+        # Converts data from the string Url
+        date = dt.datetime.strptime(past_date, '%Y-%m-%d').date()
 
-#     # Returning the actual day of the week
-#     day = days[day_number]
-#     return day
-# def past_days_album(request,past_date):
-#         # Converts data from the string Url
-#     try:
-#         # Converts data from the string Url
-#         date = dt.datetime.strptime(past_date, '%Y-%m-%d').date()
+    except ValueError:
+        # Raise 404 error when ValueError is thrown
+        raise Http404()
+        assert False
 
-#     except ValueError:
-#         # Raise 404 error when ValueError is thrown
-#         raise Http404()
-#         assert False
+    if date == dt.date.today():
+        return redirect(album_day)
+    album = Image.past(date)
+    return render(request, 'all-album/past-album.html',{"date": date,"album":album})
 
-#     if date == dt.date.today():
-#         return redirect(album_of_day)
+def search_results(request):
 
-#     return render(request, 'all-album/past-album.html', {"date": date})
+    if 'image' in request.GET and request.GET["image"]:
+        search_term = request.GET.get("image")
+        searched_image = Image.search_by_image_name(search_term)
+        message = f"{search_term}"
+
+        return render(request, 'all-album/search.html',{"message":message,"image": searched_image})
+
+    else:
+        message = "You haven't searched for any term"
+        return render(request, 'all-album/search.html',{"message":message})
+
+
+def image(request,image_id):
+    try:
+        image = Image.objects.get(id = image_id)
+    except DoesNotExist:
+        raise Http404()
+    return render(request,"all-album/album.html", {"image":image})
