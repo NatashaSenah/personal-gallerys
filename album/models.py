@@ -25,18 +25,6 @@ class Image(models.Model):
     image_image = models.ImageField(upload_to = 'image/')
     location = models.ForeignKey(Location)
     category = models.ForeignKey(Category)
-    # @classmethod
-    # def album(cls):
-    #     today = dt.date.today()
-    #     album = cls.objects.filter(pub_date__date = today)
-    #     return album
-
-    # @classmethod
-    # def past(cls,date):
-    #     album = cls.objects.filter(pub_date__date = date)
-    #     return album
-
-
     @classmethod
     def home(cls,date):
         album = cls.objects.all()
