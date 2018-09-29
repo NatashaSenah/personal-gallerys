@@ -6,24 +6,24 @@ from .models import Image
 
 def album_today(request):
     date = dt.date.today()
-    album = Image.album()
+    album = Image.objects.all()
     return render(request, 'all-album/today-album.html', {"date": date,"album":album})
 
-def past_days_album(request,past_date):
-        # Converts data from the string Url
-    try:
-        # Converts data from the string Url
-        date = dt.datetime.strptime(past_date, '%Y-%m-%d').date()
+# def past_days_album(request,past_date):
+#         # Converts data from the string Url
+#     try:
+#         # Converts data from the string Url
+#         date = dt.datetime.strptime(past_date, '%Y-%m-%d').date()
 
-    except ValueError:
-        # Raise 404 error when ValueError is thrown
-        raise Http404()
-        assert False
+#     except ValueError:
+#         # Raise 404 error when ValueError is thrown
+#         raise Http404()
+#         assert False
 
-    if date == dt.date.today():
-        return redirect(album_day)
-    album = Image.past(date)
-    return render(request, 'all-album/past-album.html',{"date": date,"album":album})
+#     if date == dt.date.today():
+#         return redirect(album_day)
+#     album = Image.past(date)
+#     return render(request, 'all-album/past-album.html',{"date": date,"album":album})
 
 def search_results(request):
 

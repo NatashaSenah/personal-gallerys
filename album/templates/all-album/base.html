@@ -12,14 +12,14 @@
   {% endif %}
   {% block styles %}
   {% bootstrap_css %}
-  <link rel="stylesheet" href="{% static 'css/basenews.css' %}">
+  <link rel="stylesheet" href="{% static 'css/basealbum.css' %}">
 {% endblock %}
 </head>
 <body>
     {% include "navbar.html" %}
     {% block content %} 
  
-    <div class="container">
+    <!-- <div class="container">
       <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -27,7 +27,7 @@
         </div>
         <div class="col-md-2"></div>
       </div>
-    </div>
+    </div> -->
     {%endblock%}
     {% block scripts %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
